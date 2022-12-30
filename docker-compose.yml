@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+  app:
+    container_name: app
+    image: node
+    working_dir: /var/www
+    entrypoint: ./node_modules/.bin/nodemon main.js
+    volumes:
+      - ./src:/var/www
+    tty: true
+    networks:
+      - backend
+      - net_proxy
+    depends_on:
+      - db
+
+  proxy:
+    container_name: proxy
+    build: 
+      context: .
+      dockerfile: Dockerfile.nginx
+    ports:
+      - 8080:80
+    networks:
+      - net_proxy
+    depends_on:
+      - app
+    restart: always
+
+  db:
+    container_name: db
+    image: mysql:5.7
+    restart: always
+    volumes:
+      - .docker:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: database
+    ports:
+      - 3306:3306
+    networks:
+      - backend
+
+networks:
+  backend:
+    name: backend
+    driver: bridge
+  net_proxy:
+    name: net_proxy
+    driver: bridge
