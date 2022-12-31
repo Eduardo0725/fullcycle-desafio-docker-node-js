@@ -19,8 +19,6 @@ con.createUsersTableIfNotExists = () => {
 
     con.query(sql, (err, result) => {
         if (err) throw err;
-
-        console.log(result);
     });
 }
 
