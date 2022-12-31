@@ -5,15 +5,16 @@ services:
     container_name: app
     image: node
     working_dir: /var/www
-    entrypoint: ./node_modules/.bin/nodemon main.js
+    # entrypoint: npm install && node /var/www/main.js
+    entrypoint: ./node-entrypoint.sh
     volumes:
       - ./src:/var/www
-    tty: true
     networks:
       - backend
       - net_proxy
     depends_on:
       - db
+    restart: always
 
   proxy:
     container_name: proxy
