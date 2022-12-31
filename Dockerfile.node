@@ -1,0 +1,9 @@
+FROM node
+
+WORKDIR /var/www
+
+COPY src .
+
+RUN npm install
+
+ENTRYPOINT [ "node", "main.js" ]

@@ -3,12 +3,9 @@ version: '3'
 services:
   app:
     container_name: app
-    image: node
-    working_dir: /var/www
-    # entrypoint: npm install && node /var/www/main.js
-    entrypoint: ./node-entrypoint.sh
-    volumes:
-      - ./src:/var/www
+    build:
+      context: .
+      dockerfile: Dockerfile.node
     networks:
       - backend
       - net_proxy
